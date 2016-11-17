@@ -10,7 +10,13 @@ let $ = require('jquery'),
 // ****************************************
 
 function getSongs(callback) {
-
+  return new Promise(function(resolve, reject){
+    $.ajax({
+        url: "https://music-history-6fa35.firebaseio.com/songs.json"
+    }).done(function(songData){
+      resolve(songData);
+    });
+  });
 }
 
 function addSong(songFormObj) {
@@ -23,7 +29,15 @@ function deleteSong(songId) {
 }
 
 function getSong(songId) {
-
+  return new Promise(function(resolve, reject) {
+    $.ajax({
+      url: `https://music-history-6fa35.firebaseio.com/songs/${songId}.json`
+    }).done(function(songData){
+      resolve(songData);
+    }).fail(function(error) {
+      reject(error);
+    });
+  });
 }
 
 // GET - Requests/read data from a specified resource
