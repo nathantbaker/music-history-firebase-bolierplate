@@ -29,7 +29,12 @@ loadSongsToDOM(); //<--Move to auth section after adding login btn
 
 // Send newSong data to db then reload DOM with updated song data
 $(document).on("click", ".save_new_btn", function() {
-
+  console.log("click save new button");
+  let songObj =  buildSongObj();
+  db.addSong(songObj)
+  .then(function(songId){
+    loadSongsToDOM();
+  });
 });
 
 // go get the song from database and then populate the form for editing.
@@ -58,7 +63,12 @@ $(document).on("click", ".save_edit_btn", function() {
 
 // Remove song then reload the DOM w/out new song
 $(document).on("click", ".delete-btn", function () {
-
+  console.log("click delete button");
+  let songId = $(this).data("delete-id");
+  db.deleteSong(songId)
+  .then(function(){
+    loadSongsToDOM();
+  });
 });
 
 
