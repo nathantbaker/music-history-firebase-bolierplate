@@ -43,7 +43,15 @@ function getSong(songId) {
 // GET - Requests/read data from a specified resource
 // PUT - Update data to a specified resource. Takes two parameters.
 function editSong(songFormObj, songId) {
-
+  return new Promise(function(resolve, reject){
+    $.ajax({
+      url: `https://music-history-6fa35.firebaseio.com/songs/${songId}.json`,
+      type: 'PUT',
+      data: JSON.stringify(songFormObj)
+    }).done(function(data){
+      resolve(data);
+    });
+  });
 }
 
 module.exports = {

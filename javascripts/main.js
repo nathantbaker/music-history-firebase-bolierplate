@@ -47,7 +47,13 @@ $(document).on("click", ".edit-btn", function () {
 
 //Save edited song to FB then reload DOM with updated song data
 $(document).on("click", ".save_edit_btn", function() {
-
+  console.log("click save edit button");
+  let songObj = buildSongObj(),
+      songId = $(this).attr("id");
+  db.editSong(songObj, songId)
+  .then(function(data){
+    loadSongsToDOM();
+  });
 });
 
 // Remove song then reload the DOM w/out new song
