@@ -20,12 +20,28 @@ function getSongs(callback) {
 }
 
 function addSong(songFormObj) {
-
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+        url: "https://music-history-6fa35.firebaseio.com/songs.json",
+        type: "POST",
+        data: JSON.stringify(songFormObj),
+        dataType: "json"
+      }).done(function(songId){
+          resolve(songId);
+      });
+    });
 }
 // POST - Submits data to be processed to a specified resource. Takes one parameter.
 
 function deleteSong(songId) {
-
+  return new Promise(function(resolve, reject){
+    $.ajax({
+      url: `https://music-history-6fa35.firebaseio.com/songs/${songId}.json`,
+      method: "DELETE"
+    }).done(function(){
+      resolve();
+    });
+  });
 }
 
 function getSong(songId) {
