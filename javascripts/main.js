@@ -2,12 +2,14 @@
 
 let $ = require('jquery'),
     db = require("./db-interaction"),
-    templates = require("./dom-builder");
-    // login = require("./user");
+    templates = require("./dom-builder"),
+    user = require("./user");
 
 
 // Using the REST API
 function loadSongsToDOM() {
+  $(".uiContainer--wrapper").html("");
+  let currentUser = user.getUser();
   console.log("Need to load some songs, Buddy");
   db.getSongs()
   .then(function(songData){
@@ -20,12 +22,11 @@ function loadSongsToDOM() {
     });
 
     console.log("data with ids", songData);
-
     templates.makeSongList(songData);
 
   });
 }
-loadSongsToDOM(); //<--Move to auth section after adding login btn
+// loadSongsToDOM(); //<--Move to auth section after adding login btn
 
 // Send newSong data to db then reload DOM with updated song data
 $(document).on("click", ".save_new_btn", function() {
@@ -67,6 +68,18 @@ $(document).on("click", ".delete-btn", function () {
   let songId = $(this).data("delete-id");
   db.deleteSong(songId)
   .then(function(){
+    loadSongsToDOM();
+  });
+});
+
+$("#auth-btn").click(function() {
+  console.log("clicked auth");
+  user.logInGoogle()
+  .then(function(result) {
+    let user = result.user;
+    console.log("logged in user", user.uid);
+    $("#auth-btn").addClass("is-hidden");
+    $("#logout").removeClass("is-hidden");
     loadSongsToDOM();
   });
 });
