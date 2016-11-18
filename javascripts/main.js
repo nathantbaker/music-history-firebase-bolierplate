@@ -11,7 +11,7 @@ function loadSongsToDOM() {
   $(".uiContainer--wrapper").html("");
   let currentUser = user.getUser();
   console.log("Need to load some songs, Buddy");
-  db.getSongs()
+  db.getSongs(currentUser)
   .then(function(songData){
     console.log("got some data", songData);
 
@@ -26,6 +26,7 @@ function loadSongsToDOM() {
 
   });
 }
+
 // loadSongsToDOM(); //<--Move to auth section after adding login btn
 
 // Send newSong data to db then reload DOM with updated song data
@@ -92,8 +93,10 @@ function buildSongObj() {
     title: $("#form--title").val(),
     artist: $("#form--artist").val(),
     album: $("#form--album").val(),
-    year: $("#form--year").val()
+    year: $("#form--year").val(),
+    uid: user.getUser()
   };
+  console.log("uid", songObj.uid);
   return songObj;
 }
 
